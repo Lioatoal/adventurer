@@ -1,0 +1,227 @@
+<html>
+
+<head>
+    <title>IOT-API</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <script
+      src="asset/js/jquery-3.3.1.min.js"
+      ></script>
+    <link href="asset/css/jquery.loading.min.css" rel="stylesheet" />
+    <script src="asset/js/jquery.loading.min.js"></script>
+    <link rel="stylesheet" href="asset/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="asset/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="asset/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <div style="font-size: 18px">
+        <div class="row" >
+            <h1>MTI-IoT-API</h1>
+            <p>Welcome to MTI API Demo, Please click below URL to get IoT Information</p>
+        </div>
+        <div class="row" style="padding-bottom: 20px">
+            <div class="col-md-offset-8 col-md-3">
+                <p id="ethIP">Ethernet IP:</p>
+            </div>
+            <div class="col-md-1">
+                <a id="clear">Clear</a>
+            </div>
+        </div>
+        <div class="row" style="border:#919191 solid">
+            <div id="apiList" class="col-md-6">
+                <p>@MQTT Topic List</p>
+                <ul id='topicList' style="list-style-type:circle; padding-top: 10px"></ul>
+                <br>
+                <p>@MQTT Topic Configuration</p>
+                <ul style="list-style-type:circle; padding-top: 10px">
+                    <h5>Define your Topic: </h5>
+                    <div class="row form-group">
+                        <div class="col-md-5">
+                            <input id="defTopic" type="text" class="form-control input-sm" placeholder="Default: raspberry/raspberry/"/>
+                        </div>
+                        <div class="col-md-2">
+                            <input id="submitTopic" type="button" class="btn btn-Primary" value="Submit"/>
+                        </div>
+                    </div>
+                </ul>
+                <p>@Sensor Control API</p>
+                <ul style="list-style-type:circle; padding-top: 10px">
+                    <p>RFID Sensor Control</p>
+                    <li><a id="rfidSensorEnable">Enable RFID Sensor</a></li>
+                    <li><a id="rfidSensorDisable">Disalbe RFID Sensor</a></li>
+                    <br>
+                    <p>GPIO Sensor Control</p>
+                    <li><a id="gpioSensorEnable">Enable GPIO Sensor</a></li>
+                    <li><a id="gpioSensorDisable">Disalbe GPIO Sensor</a></li>
+                </ul>
+                <br>
+                <p>@GPIO API</p>
+                <ul style="list-style-type:circle; padding-top: 10px">
+                    <p>GET API</p>
+                    <li><a id="gpioList">List All GPIO</a></li>
+                    <br>
+                    <p>SET API</p>
+                    <li><a id="gpioEnable">Enable GPIO 34</a></li>
+                    <li><a id="gpioDisable">Disable GPIO 34</a></li>
+                    <li>
+                        <a id="gpioConfig">Config GPIO 34</a>
+                        <div class="row form-group">
+                            <div class="col-md-2">
+                                <input id="direction" name="fixedQ" type="text" class="form-control input-sm" placeholder="direction:in/out"/>
+                            </div>
+                            <div class="col-md-2">
+                                <input id="value" name="fixedQ" type="number" class="form-control input-sm" placeholder="value"/>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <br>
+                <p>@Module Configuration API</p>
+                <ul style="list-style-type:circle; padding-top: 10px">
+                    <p>GET API</p>
+                    <li><a id="getAntenna">Get Antenna</a></li>
+                    <li><a name="getAlgorithm" value="fixedQ">Get Algorithm - Fixed Q</a></li>
+                    <li><a name="getAlgorithm" value="dynamicQ">Get Algorithm - Dynamic Q</a></li>
+                    <li><a id="getMask">Get Mask</a></li>
+                    <br>
+                    <p>SET API</p>
+                    <li>
+                        <a id="setAntenna">Set Antenna</a>
+                        <div class="row form-group">
+                            <div class="col-md-2">
+                                <input id="dwellTime" type="number" class="form-control input-sm" placeholder="dwellTime"/>
+                            </div>
+                            <div class="col-md-2">
+                                <input id="cycle" type="number" class="form-control input-sm" placeholder="cycle"/>
+                            </div>
+                            <div class="col-md-2">
+                                <input id="power" type="number" class="form-control input-sm" placeholder="power"/>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a name="setAlgorithm" value="fixedQ">Set Algorithm - Fixed Q</a>
+                        <div class="row form-group">
+                            <div class="col-md-3">
+                                <input id="QValue" name="fixedQ" type="number" class="form-control input-sm" placeholder="QValue"/>
+                            </div>
+                            <div class="col-md-3">
+                                <input id="retryCount" name="fixedQ" type="number" class="form-control input-sm" placeholder="retryCount"/>
+                            </div>
+                            <div class="col-md-3">
+                                <input id="toggleTarget" name="fixedQ" type="number" class="form-control input-sm" placeholder="toggleTarget"/>
+                            </div>
+                            <div class="col-md-3">
+                                <input id="repeatUntilNoTags" name="fixedQ" type="number" class="form-control input-sm" placeholder="repeatUntilNoTags"/>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a name="setAlgorithm" value="dynamicQ">Set Algorithm - Dynamic Q</a>
+                        <div class="row form-group">
+                            <div class="col-md-3">
+                                <input id="startQValue" name="dynamicQ" type="number" class="form-control input-sm" placeholder="startQValue"/>
+                            </div>
+                            <div class="col-md-3">
+                                <input id="minQValue" name="dynamicQ" type="number" class="form-control input-sm" placeholder="minQValue"/>
+                            </div>
+                            <div class="col-md-3">
+                                <input id="maxQValue" name="dynamicQ" type="number" class="form-control input-sm" placeholder="maxQValue"/>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-3">
+                                <input id="retryCount" name="dynamicQ" type="number" class="form-control input-sm" placeholder="retryCount"/>
+                            </div>
+                            <div class="col-md-3">
+                                <input id="toggleTarget" name="dynamicQ" type="number" class="form-control input-sm" placeholder="toggleTarget"/>
+                            </div>
+                            <div class="col-md-3">
+                                <input id="thresholdMultiplier" name="dynamicQ" type="number" class="form-control input-sm" placeholder="thresholdMultiplier"/>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a id="setMask">Set Mask</a>
+                        <div class="row form-group">
+                            <div class="col-md-6">
+                                <input id="mask" type="text" class="form-control input-sm" placeholder="mask"/>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <br>
+                <p>@Module Inventory API</p>
+                <ul style="list-style-type:circle; padding-top: 10px">
+                    <li><a name="invAction" value="start">Start Inventory</a></li>
+                    <li><a name="invAction" value="stop">Stop Inventory</a></li>
+                    <li><a name="invData" value="all">Get Inventory data, type : all</a></li>
+                    <li><a name="invData" value="epc">Get Inventory data, type : epc</a></li>
+                    <li><a name="invData" value="rssi">Get Inventory data, type : rssi</a></li>
+                    <li><a name="invData" value="count">Get Inventory data, type : count</a></li>
+                    <li><a name="invData" value="epc/count">Get Inventory data, type : epc & count</a></li>
+                </ul>
+                <br>
+                <p>@Module Tag Access API</p>
+                <ul style="list-style-type:circle; padding-top: 10px">
+                    <li>
+                        <a id="readTag">Read Tag</a>
+                        <div class="row form-group">
+                            <div class="col-md-2">
+                                <input id="readBank" type="number" class="form-control input-sm" placeholder="bank"/>
+                            </div>
+                            <div class="col-md-2">
+                                <input id="readOffset" type="number" class="form-control input-sm" placeholder="offset"/>
+                            </div>
+                            <div class="col-md-2">
+                                <input id="readCount" type="number" class="form-control input-sm" placeholder="count"/>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a id="writeTag">Wirte Tag</a>
+                        <div class="row form-group">
+                            <div class="col-md-2">
+                                <input id="writeBank" type="number" class="form-control input-sm" placeholder="bank"/>
+                            </div>
+                            <div class="col-md-2">
+                                <input id="writeOffset" type="number" class="form-control input-sm" placeholder="offset"/>
+                            </div>
+                            <div class="col-md-2">
+                                <input id="writeData" type="text" class="form-control input-sm" placeholder="data"/>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <p>@Software Update API</p>
+                <ul id="loading" style="list-style-type:circle; padding-top: 10px">
+                    <li>
+                        <form>
+                            <a >Update</a>
+                            <div class="row form-group">
+                                <div class="col-md-5">
+                                    <input name="MTI" type="file" class="form-control input-sm"/>
+                                </div>
+                                <div class="col-md-2">
+                                    <input id="swUpdate" type="submit" class="btn btn-Primary" value="Submit"/>
+                                </div>
+                            </div>
+                        </form>
+
+                    </li>
+                </ul>
+                <br>
+            </div>
+            <div id="printfRequire" class="col-md-6 text-link">
+            </div>
+            <div id="printfResponse" class="col-md-6">
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script type="text/javascript" src="JSIndex.js"></script>
+
+</html>

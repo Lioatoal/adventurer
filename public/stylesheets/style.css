@@ -1,0 +1,24 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+a {
+  cursor: pointer;
+}
+#apiList{
+    height: 100%;
+    overflow-x:auto;
+}
+#printfRequire {
+    height: 50%;
+    overflow-x:auto;
+    word-break: break-all;
+    background-color: #e2e2e2;
+}
+#printfResponse {
+    height: 50%;
+    overflow-x:auto;
+    word-break: break-all;
+    background-color: #000;
+    color: #fff;
+}
