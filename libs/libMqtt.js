@@ -7,14 +7,14 @@ const uuidv4 = require('uuid/v4');
 const async = require('async');
 const fs = require('fs');
 
-// const mqtt_url = url.parse('mqtt://localhost:1883');
-// const auth = (mqtt_url.auth || 'mtiadmin:mtiadmin').split(':');
+const mqtt_url = url.parse('mqtt://localhost:1883');
+const auth = (mqtt_url.auth || 'mtiadmin:mtiadmin').split(':');
 
 const options = {
   port: '1883',
   clientId: 'MTI_' + Math.random().toString(16).substr(2, 8),
-//   username: auth[0],
-//   password: auth[1],
+  username: auth[0],
+  password: auth[1],
 };
 
 const TOPIC = readTopicConfig();
@@ -648,6 +648,111 @@ mqttClient.prototype.getInvData = function(data, callback){
         }
     })
 };
+mqttClient.prototype.setQueryTagGroup = function(data, callback){
+    let count = TIMEOUT;
+    let pubMes = {
+        uuid: uuidv4(),
+        function: "setQueryTagGroup",
+        request: data
+    }
+    let response = {};
+    pubIDList[pubMes.uuid] = true;
+    client.publish(RFID_CMD, JSON.stringify(pubMes));
+
+    async.series([
+        function waitMQTT(next) {
+            if (pubIDList[pubMes.uuid] !== true) {
+                response = {data:pubIDList[pubMes.uuid]};
+                next(null);
+                delete pubIDList[pubMes.uuid];
+            } else {
+                if (count) {
+                    setTimeout(waitMQTT, 100, next);
+                    count -= 1;
+                } else {
+                    let timestamp = new Date();
+                    next({error: `device is no response, timestamp : ${timestamp}`});
+                }
+            }
+        }
+    ],(errs, results)=>{
+        if (errs) {
+            callback(errs);
+        } else {
+            callback(response);
+        }
+    });
+};
+mqttClient.prototype.setLinkProfile = function(data, callback){
+    let count = TIMEOUT;
+    let pubMes = {
+        uuid: uuidv4(),
+        function: "setLinkProfile",
+        request: data
+    }
+    let response = {};
+    pubIDList[pubMes.uuid] = true;
+    client.publish(RFID_CMD, JSON.stringify(pubMes));
+
+    async.series([
+        function waitMQTT(next) {
+            if (pubIDList[pubMes.uuid] !== true) {
+                response = {data:pubIDList[pubMes.uuid]};
+                next(null);
+                delete pubIDList[pubMes.uuid];
+            } else {
+                if (count) {
+                    setTimeout(waitMQTT, 100, next);
+                    count -= 1;
+                } else {
+                    let timestamp = new Date();
+                    next({error: `device is no response, timestamp : ${timestamp}`});
+                }
+            }
+        }
+    ],(errs, results)=>{
+        if (errs) {
+            callback(errs);
+        } else {
+            callback(response);
+        }
+    });
+};
+mqttClient.prototype.setRegion = function(data, callback){
+    let count = TIMEOUT;
+    let pubMes = {
+        uuid: uuidv4(),
+        function: "setRegion",
+        request: data
+    }
+    let response = {};
+    pubIDList[pubMes.uuid] = true;
+    client.publish(RFID_CMD, JSON.stringify(pubMes));
+
+    async.series([
+        function waitMQTT(next) {
+            if (pubIDList[pubMes.uuid] !== true) {
+                response = {data:pubIDList[pubMes.uuid]};
+                next(null);
+                delete pubIDList[pubMes.uuid];
+            } else {
+                if (count) {
+                    setTimeout(waitMQTT, 100, next);
+                    count -= 1;
+                } else {
+                    let timestamp = new Date();
+                    next({error: `device is no response, timestamp : ${timestamp}`});
+                }
+            }
+        }
+    ],(errs, results)=>{
+        if (errs) {
+            callback(errs);
+        } else {
+            callback(response);
+        }
+    });
+};
 mqttClient.prototype.readTag = function(read, callback){
     let count = TIMEOUT;
     let pubMes = {
@@ -831,13 +936,18 @@ mqttClient.prototype.gpioStatus = function (status, callback) {
 }
 
 function readTopicConfig() {
-    let topicFile = fs.readFileSync('/etc/systemd/adventurer.conf', 'UTF8').toString().split('\n');
-    let topicName = "";
-    for (let i = 0; i < topicFile.length; i++) {
-        if(topicFile[i] === "[Manager]"){
-            topicName = topicFile[i+1].split('=')[1];
-            break;
+    let topicFile = "", topicName = "";
+
+    try {
+        topicFile = fs.readFileSync('/etc/systemd/adventurer.conf', 'UTF8').toString().split('\n');
+        for (let i = 0; i < topicFile.length; i++) {
+            if(topicFile[i] === "[Manager]"){
+                topicName = topicFile[i+1].split('=')[1];
+                break;
+            }
         }
+    } catch (error) {
+        topicName = 'respberry/raspberry/'
     }
     return topicName;
 }

@@ -257,9 +257,17 @@ router.post('/upgrade',upload.single('MTI'), function(req, res){
             });
         },
         (next)=>{
-            console.error("test1");
-            exec(`sh ${UPGRADE_FOLDER}/MTI-gateway-uninstall.sh;sh ${UPGRADE_FOLDER}/MTI-gateway-install.sh;`, (error, stdout, stderr)=>{
-                console.error("test2");
+            exec(`sh ${UPGRADE_FOLDER}/MTI-gateway-uninstall.sh`, (error, stdout, stderr)=>{
+                if (error !== null) {
+                    console.error(`exec error: ${error}`);
+                    res.json({error: `exec error: ${error}`});
+                    return;
+                }
+                next();
+            });
+        },
+        (next)=>{
+            exec(`sh ${UPGRADE_FOLDER}/MTI-gateway-install.sh`, (error, stdout, stderr)=>{
                 if (error !== null) {
                     console.error(`exec error: ${error}`);
                     res.json({error: `exec error: ${error}`});
@@ -272,6 +280,5 @@ router.post('/upgrade',upload.single('MTI'), function(req, res){
         res.json({data:"upgrade Successful!"});
     });
 });
-
 
 module.exports = router;
