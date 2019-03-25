@@ -5,9 +5,11 @@
   "scripts": {
     "start": "node ./bin/www 2>error.log"
   },
+  "bin": "./bin/www",
   "dependencies": {
     "async": "^2.6.0",
     "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
     "compression": "^1.7.1",
     "dateformat": "^3.0.2",
     "debug": "^4.1.0",
@@ -17,7 +19,13 @@
     "morgan": "^1.9.0",
     "mqtt": "^2.18.8",
     "multer": "^1.4.1",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "xlsx": "^0.14.1"
   },
-  "description": "NodeJS Version: 8.4.0"
+  "description": "NodeJS Version: 8.4.0",
+  "pkg":{
+    "assets":[
+      "public/**/**/*"
+    ]
+  }
 }
