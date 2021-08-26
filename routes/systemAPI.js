@@ -8,10 +8,10 @@ const libMqtt = require('../libs/libMqtt');
 
 const router = express.Router();
 const storage = multer.diskStorage({
-	destination:'/opt/MTI_Adventurer/sys_upgrade/',
-	filename:function (req, file, cb) {
-		 cb(null, file.originalname);
-	 },
+	// destination:'/opt/MTI_Adventurer/sys_upgrade/',
+	// filename:function (req, file, cb) {
+	// 	 cb(null, file.originalname);
+	//  },
 });
 const upload = multer({ storage: storage });
 
